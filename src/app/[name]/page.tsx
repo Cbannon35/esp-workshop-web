@@ -26,24 +26,23 @@ const KeyPage = () => {
   const [isOpen, setIsOpen] = React.useState<boolean[]>([])
   const [loading, setLoading] = useState(false)
   const [isRow, setIsRow] = useState(true)
-
-  useEffect(() => {
-    console.log(isOpen)
-  }, [isOpen])
+  const [recentUploadTime, setRecentUploadTime] = useState<string | null>(null)
 
   useEffect(() => {
     const dataRef = ref(database, `/${name}`);
     const unsubscribe = onValue(dataRef, (snapshot) => {
       const newData = snapshot.val();
-      console.log("Got new data!", newData);
-      toast("Data uploaded to Firebase", {
-          description: new Date().toLocaleTimeString(),
-          action: {
-            label: "Close",
-            onClick: () => {},
-          },
-        })
-
+      const newUploadTime = new Date().toLocaleTimeString()
+      if (newUploadTime !== recentUploadTime) {
+        toast("Data uploaded to Firebase", {
+            description: new Date().toLocaleTimeString(),
+            action: {
+              label: "Close",
+              onClick: () => {},
+            },
+          })
+      }
+      setRecentUploadTime(newUploadTime)
       setData(newData);
       // set isOpen to an array of the same length as the number of sensors, but also preserve the previous state
       const length = Object.keys(newData).length
