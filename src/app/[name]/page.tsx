@@ -8,8 +8,17 @@ import { Button } from '@/components/ui/button';
 // import { toast } from "sonner"
 
 
+type SensorData = {
+  [sensor: string]: {
+    [reading: string]: {
+      data: string;
+      timestamp: number;
+    };
+  };
+};
+
 const KeyPage = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<SensorData>({});
   const pathname = usePathname()
   const name = pathname.replace('/', '');
   const [isOpen, setIsOpen] = React.useState<boolean[]>([])
