@@ -6,7 +6,9 @@ import { usePathname } from 'next/navigation';
 import { CollapsibleContent, CollapsibleTrigger, Collapsible } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/loading';
-import { toast } from "sonner"
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
+
 import {Tabs, TabsList, TabsTrigger, TabsContent} from '@/components/ui/tabs';
 
 
@@ -20,28 +22,26 @@ type SensorData = {
 };
 
 const KeyPage = () => {
+  const { toast } = useToast()
   const [data, setData] = useState<SensorData>({});
   const pathname = usePathname()
   const name = pathname.replace('/', '');
   const [isOpen, setIsOpen] = React.useState<boolean[]>([])
   const [loading, setLoading] = useState(false)
   const [isRow, setIsRow] = useState(true)
-  const [recentUploadTime, setRecentUploadTime] = useState<string | null>(null)
 
   useEffect(() => {
     const dataRef = ref(database, `/${name}`);
     const unsubscribe = onValue(dataRef, (snapshot) => {
       const newData = snapshot.val();
       const newUploadTime = new Date().toLocaleTimeString()
-      if (newUploadTime !== recentUploadTime) {
-        toast("Data uploaded to Firebase", {
-            description: new Date().toLocaleTimeString(),
-            action: {
-              label: "Close",
-              onClick: () => {},
-            },
-          })
-      }
+      toast({
+          title: "Firebase data updated",
+          description: newUploadTime,
+          action: (
+            <ToastAction altText="Close Toast">Close</ToastAction>
+          ),
+        })
       setRecentUploadTime(newUploadTime)
       setData(newData);
       // set isOpen to an array of the same length as the number of sensors, but also preserve the previous state
