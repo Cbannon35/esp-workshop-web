@@ -35,12 +35,10 @@ const KeyPage = () => {
     const unsubscribe = onValue(dataRef, (snapshot) => {
       const newData = snapshot.val();
       const newUploadTime = new Date().toLocaleTimeString()
+      console.log("yuh")
       toast({
           title: "Firebase data updated",
           description: newUploadTime,
-          action: (
-            <ToastAction altText="Close Toast">Close</ToastAction>
-          ),
         })
       setData(newData);
       // set isOpen to an array of the same length as the number of sensors, but also preserve the previous state
