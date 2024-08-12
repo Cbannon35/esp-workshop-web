@@ -42,7 +42,6 @@ const KeyPage = () => {
             <ToastAction altText="Close Toast">Close</ToastAction>
           ),
         })
-      setRecentUploadTime(newUploadTime)
       setData(newData);
       // set isOpen to an array of the same length as the number of sensors, but also preserve the previous state
       const length = Object.keys(newData).length
