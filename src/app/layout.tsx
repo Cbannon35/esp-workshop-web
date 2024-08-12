@@ -17,7 +17,7 @@ export default function RootLayout({
       <body className="p-8">
         <header className="text-3xl">Welcome to the ESP workshop!</header>
         <main>{children}</main>
-        <Toaster position="top-right"/>
+        <Toaster/>
       </body>
     </html>
   );
